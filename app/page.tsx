@@ -1,8 +1,7 @@
 import { fetchCars } from "@/app/utils";
 import { HomeProps } from "@/types";
 import { fuels, yearsOfProduction } from "@/app/constants";
-import { CarCard, ShowMore, SearchBar, CustomFilter, Hero } from "@/components";
-import ShowLess from "@/components/ShowLess";
+import { CarCard, ShowMore, SearchBar, CustomFilter, Hero, ShowLess } from "@/components";
 
 export default async function Home({ searchParams }: HomeProps) {
   const allCars = await fetchCars({
