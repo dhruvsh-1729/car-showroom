@@ -7,10 +7,10 @@ import { useRouter, usePathname } from 'next/navigation'
 
 import axios from 'axios'
 
-interface IUser{
-  id:number;
-  username:string;
-  email:string;
+interface IUser {
+  id: number;
+  username: string;
+  email: string;
 }
 
 const Navbar = () => {
@@ -18,21 +18,20 @@ const Navbar = () => {
   const pathname = usePathname();
   const [login, setLogin] = useState<boolean>(false)
   const [user, setUser] = useState<IUser>({
-    id:-1,
-    username:"",
-    email:""
+    id: -1,
+    username: "",
+    email: ""
   });
 
   useEffect(() => {
-    if(pathname==="/"){
     try {
       const getUserData = async () => {
-        const response:any = await axios.get('/api/users/me').catch(err => console.log(err));
+        const response: any = await axios.get('/api/users/me').catch(err => console.log(err));
         if (response?.status === 200) {
           setUser(response.data.data);
           setLogin(true);
         }
-        else if(response?.status === 400) {
+        else if (response?.status === 400) {
           setLogin(false);
         }
       }
@@ -41,32 +40,32 @@ const Navbar = () => {
     catch (err: any) {
       console.log(err.message);
     }
-  }
-  }, [pathname])
+  }, [])
 
-  const logoutUser = async()=>{
+  const logoutUser = async () => {
     const response = await axios.get('/api/users/logout');
-    if(response.data.success){
+    if (response.data.success) {
       setLogin(false);
       setUser({
-        id:-1,
-        username:"",
-        email:""
+        id: -1,
+        username: "",
+        email: ""
       });
+      router.push('/')
     }
-    else{
+    else {
       console.log(response)
     }
   }
 
   const pushSignin = () => {
-    if(login){
+    if (login) {
       logoutUser();
     }
-    else{
+    else {
       router.push('/login');
     }
-   }
+  }
 
   return (
     <header className='w-full absolute z-10'>
@@ -81,9 +80,26 @@ const Navbar = () => {
             height={18}
             className='object-contain' />
         </Link>
+        <div className="flex flex-row px-2">
+        <Link href="/about">
+          <span className="text-blue-900 text-lg hover:bold hover:text-purple-400 cursor-pointer mx-4 px-2">About</span>
+        </Link>
+        <Link href="/news">
+          <span className="text-blue-900 text-lg hover:bold hover:text-purple-400 cursor-pointer mx-4 px-2">News</span>
+        </Link>
         <div className="">{
-          login ?  `Hi ${user?.username}!`: ""
+          login ? (
+            <>
+              <Link href="/wishlist">
+                <span className="text-blue-900 text-lg hover:bold hover:text-purple-400 cursor-pointer mx-4 px-2">Wishlist</span>
+              </Link>
+              <Link href="/profile">
+                <span className="text-blue-900 text-lg hover:bold hover:text-purple-400 cursor-pointer mx-4 px-2">Profile</span>
+              </Link>
+            </>
+          ) : ""
         }</div>
+        </div>
         <CustomButton
           title={login ? "Logout" : "Sign In"}
           btnType="button"

@@ -10,6 +10,8 @@ import CarDetails from "./CarDetails";
 import ShowMore from "./ShowMore";
 import ShowLess from "./ShowLess";
 import Loader from "./Loader";
+import NewsItem from "./NewsItem";
+
 export {
     Hero,
     CustomButton,
@@ -22,5 +24,6 @@ export {
     CarDetails,
     ShowMore,
     ShowLess,
-    Loader
+    Loader,
+    NewsItem
 }

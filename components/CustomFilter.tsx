@@ -23,7 +23,7 @@ export default function CustomFilter({ title, options }: CustomFilterProps) {
       <Listbox
         value={selected}
         onChange={(e) => {
-          setSelected(e.title); // Update the selected option in state
+          setSelected(e); // Update the selected option in state
           handleUpdateParams(e); // Update the URL search parameters and navigate to the new URL
         }}
       >

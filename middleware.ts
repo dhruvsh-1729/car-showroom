@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-const publicpaths = ['/','/login','/signup','/verifyemail']
+const publicpaths = ['/','/login','/signup','/verifyemail','/about','/news']
 
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
@@ -10,7 +10,7 @@ export function middleware(request: NextRequest) {
 
   const token = request.cookies.get('token')?.value || ''
 
-  if(token) {
+  if(isPublicPath && token) {
     return NextResponse.redirect(new URL('/', request.nextUrl))
   }
 
@@ -23,7 +23,6 @@ export function middleware(request: NextRequest) {
 // See "Matching Paths" below to learn more
 export const config = {
   matcher: [
-    '/profile',
     '/login',
     '/signup',
     '/verifyemail'
