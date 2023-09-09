@@ -22,6 +22,7 @@ const Navbar = () => {
   });
 
   useEffect(() => {
+    
     try {
       const getUserData = async () => {
         const response = await axios.get('/api/users/me');
@@ -36,6 +37,7 @@ const Navbar = () => {
     catch (err: any) {
       console.log(err.message);
     }
+  
   }, [])
 
   const logoutUser = async()=>{
