@@ -9,7 +9,7 @@ import CarCard from "./CarCard";
 import CarDetails from "./CarDetails";
 import ShowMore from "./ShowMore";
 import ShowLess from "./ShowLess";
-
+import Loader from "./Loader";
 export {
     Hero,
     CustomButton,
@@ -21,5 +21,6 @@ export {
     CarCard,
     CarDetails,
     ShowMore,
-    ShowLess
+    ShowLess,
+    Loader
 }

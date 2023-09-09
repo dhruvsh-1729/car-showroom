@@ -2,6 +2,7 @@ import { fetchCars } from "@/app/utils";
 import { HomeProps } from "@/types";
 import { fuels, yearsOfProduction } from "@/app/constants";
 import { CarCard, ShowMore, SearchBar, CustomFilter, Hero, ShowLess } from "@/components";
+import {cookies} from 'next/headers';
 
 export default async function Home({ searchParams }: HomeProps) {
   const allCars = await fetchCars({
@@ -11,6 +12,8 @@ export default async function Home({ searchParams }: HomeProps) {
     limit: searchParams.limit || 10,
     model: searchParams.model || "",
   });
+
+  const token = cookies().get('token');
 
   const isDataEmpty = !Array.isArray(allCars) || allCars.length < 1 || !allCars;
 

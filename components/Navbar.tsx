@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { CustomButton } from '.'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
+
 import axios from 'axios'
 
 interface IUser{
@@ -14,6 +15,7 @@ interface IUser{
 
 const Navbar = () => {
   const router = useRouter()
+  const pathname = usePathname();
   const [login, setLogin] = useState<boolean>(false)
   const [user, setUser] = useState<IUser>({
     id:-1,
@@ -22,23 +24,25 @@ const Navbar = () => {
   });
 
   useEffect(() => {
-    
+    if(pathname==="/"){
     try {
       const getUserData = async () => {
-        const response = await axios.get('/api/users/me');
-        if (response.status === 200) {
+        const response:any = await axios.get('/api/users/me').catch(err => console.log(err));
+        if (response?.status === 200) {
           setUser(response.data.data);
           setLogin(true);
         }
+        else if(response?.status === 400) {
+          setLogin(false);
+        }
       }
-
       getUserData();
     }
     catch (err: any) {
       console.log(err.message);
     }
-  
-  }, [])
+  }
+  }, [pathname])
 
   const logoutUser = async()=>{
     const response = await axios.get('/api/users/logout');
@@ -63,7 +67,6 @@ const Navbar = () => {
       router.push('/login');
     }
    }
-
 
   return (
     <header className='w-full absolute z-10'>

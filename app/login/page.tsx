@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { Loader } from "@/components";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -21,7 +22,7 @@ export default function LoginPage() {
             console.log("Login success", response.data);
             toast.success("Login success");
             router.push('/')
-        } catch (error) {
+        } catch (error:any) {
             console.log("Login failed", error.message);
             toast.error(error.message);
         } finally {
@@ -40,7 +41,7 @@ export default function LoginPage() {
     return (
         <div className="min-h-screen flex flex-col items-center justify-center py-6">
             <h1 className={`text-3xl mb-6 ${loading ? "text-gray-500" : "text-black"}`}>
-                {loading ? "Processing" : "Login"}
+                {loading ? <div className="flex flex-row">Processing....<Loader /></div> : "Login"}
             </h1>
             <hr className="w-16 border-t border-gray-400 mb-6" />
 
