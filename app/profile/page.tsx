@@ -1,4 +1,5 @@
 'use client'
+import { Loader } from '@/components';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 
@@ -7,21 +8,20 @@ const Profile = () => {
         name: '',
         email: '',
         city: '',
-        state: '',
-        country: '',
         age: '',
         gender: 'Male',
-        education: '',
-        occupation: '',
         interests: '',
     });
+
+    const [loading,setLoading] = useState(false);
 
     useEffect(() => {
         try {
             const getUserData = async () => {
                 const response: any = await axios.get('/api/users/me').catch(err => console.log(err));
                 if (response?.status === 200) {
-                    
+                    const user = response.data.data;
+                    setFormData(prev => ({ ...prev, ...user }))
                 }
             }
             getUserData();
@@ -39,10 +39,19 @@ const Profile = () => {
         });
     };
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
-        // Handle form submission here, e.g., send data to a server
-        console.log('Form submitted:', formData);
+        try {
+            setLoading(true);
+            const res = await axios.put('/api/users/update', formData);
+            console.log("Updated success", res.data);
+        }
+        catch (err: any) {
+            console.log(err.message);
+        }
+        finally{
+            setLoading(false);
+        }   
     };
 
     return (
@@ -69,6 +78,7 @@ const Profile = () => {
                                 type="email"
                                 id="email"
                                 name="email"
+                                disabled={true}
                                 value={formData.email}
                                 onChange={handleChange}
                                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
@@ -86,28 +96,7 @@ const Profile = () => {
                                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
                             />
                         </div>
-                        <div className="mb-4">
-                            <label htmlFor="state" className="text-gray-600">State</label>
-                            <input
-                                type="text"
-                                id="state"
-                                name="state"
-                                value={formData.state}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="country" className="text-gray-600">Country</label>
-                            <input
-                                type="text"
-                                id="country"
-                                name="country"
-                                value={formData.country}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                            />
-                        </div>
+                        
                         <div className="mb-4">
                             <label htmlFor="age" className="text-gray-600">Age</label>
                             <input
@@ -134,28 +123,6 @@ const Profile = () => {
                             </select>
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="education" className="text-gray-600">Education</label>
-                            <input
-                                type="text"
-                                id="education"
-                                name="education"
-                                value={formData.education}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="occupation" className="text-gray-600">Occupation</label>
-                            <input
-                                type="text"
-                                id="occupation"
-                                name="occupation"
-                                value={formData.occupation}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                            />
-                        </div>
-                        <div className="mb-4">
                             <label htmlFor="interests" className="text-gray-600">Interests</label>
                             <textarea
                                 id="interests"
@@ -167,11 +134,14 @@ const Profile = () => {
                             ></textarea>
                         </div>
                         <button
+                            disabled={loading}
                             type="submit"
                             className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
                         >
-                            Submit
+                            Update details
+                            {loading && <Loader />}
                         </button>
+                        
                     </form>
                 </div>
             </div>

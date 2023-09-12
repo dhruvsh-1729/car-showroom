@@ -12,6 +12,11 @@ export default function SignupPage() {
     email: "",
     password: "",
     username: "",
+    age:0,
+    city:"",
+    name:"",
+    gender:"",
+    interests:"",
   });
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
   const [loading, setLoading] = React.useState(false);

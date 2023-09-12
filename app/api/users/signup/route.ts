@@ -9,7 +9,7 @@ connect()
 export async function POST(request: NextRequest){
     try {
         const reqBody = await request.json()
-        const {username, email, password} = reqBody
+        const {username, email, password, age, city, name, gender, interests} = reqBody
 
         console.log(reqBody);
 
@@ -27,14 +27,18 @@ export async function POST(request: NextRequest){
         const newUser = new User({
             username,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            age:Number(age),
+            city,
+            name,
+            gender,
+            interests,
         })
 
         const savedUser = await newUser.save()
         console.log(savedUser);
 
         //send verification email
-
         await sendEmail({email, emailType: "VERIFY", userId: savedUser._id})
 
         return NextResponse.json({

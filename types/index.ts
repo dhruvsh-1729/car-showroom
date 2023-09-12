@@ -66,3 +66,10 @@ export interface SearchManuFacturerProps {
   manufacturer: string;
   setManuFacturer: (manufacturer: string) => void;
 }
+
+export interface TestDriveProps{
+  name:string,
+  email:string,
+  carType:string,
+  additionalInfo:string
+}
